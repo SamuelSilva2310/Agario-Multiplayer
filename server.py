@@ -19,9 +19,9 @@ MAX_CONNECTIONS = 5
 
 #GAME VARIABLES
 PLAYER_SPEED = 2
-MAX_BLOB_AMOUNT = 200
+MAX_BLOB_AMOUNT = 400
 BLOB_START_RADIUS = 5
-BLOB_GROW_AMOUNT = 0.5
+BLOB_GROW_AMOUNT = 0.3
 
 
 player_id = 0 #An ID wich will be given to each player.
@@ -63,7 +63,7 @@ def player_collision(players):
 	sort_players = sorted(players, key=lambda x: players[x].size)
 	for x, player1 in enumerate(sort_players):
 		for player2 in sort_players[x+1:]:
-			p1x = players[player2].x
+			p1x = players[player1].x
 			p1y = players[player1].y
 
 			p2x = players[player2].x

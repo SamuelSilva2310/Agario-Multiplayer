@@ -12,14 +12,9 @@ pygame.font.init()
 
 WIN_WIDTH = 1400
 WIN_HEIGHT = 800
-
 BG_COLOR = (255,255,255)
 
-PLAYER_SPEED = 2
-MAX_BLOB_AMOUNT = 200
-BLOB_START_RADIUS = 5
-BLOB_GROW_AMOUNT = 0.5
-
+PLAYER_BASE_SPEED = 7
 
 """How to check if ball collide
 dis = math.sqrt((objec_x - object2_x)**2 + (object_y-object2_y)**2)
@@ -56,7 +51,7 @@ def draw_window(win, players, blobs):
 	for blob in blobs:
 		blob.draw(win)
 	
-	for player in players:
+	for player in sorted(players, key=lambda x: players[x].size):
 		players[player].draw(win)
 	pygame.display.update()
 	
@@ -87,18 +82,22 @@ def main():
 		"""PLAYER MOVEMENT"""
 		#####################
 
+
+		vel = PLAYER_BASE_SPEED - round(player.size/40)
+		if vel <= 4:
+			vel = 4
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-			player.move(x = PLAYER_SPEED * (-1))
+			player.move(x = vel * (-1))
 
 		if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-			player.move(x = PLAYER_SPEED)
+			player.move(x = vel)
 
 		if keys[pygame.K_UP] or keys[pygame.K_w]:
-			player.move(y = PLAYER_SPEED * (-1))
+			player.move(y =vel * (-1))
 
 		if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-			player.move(y = PLAYER_SPEED)
+			player.move(y = vel)
 
 		if player.x - 5 < 0:
 			player.x = 10

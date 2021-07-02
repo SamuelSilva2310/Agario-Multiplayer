@@ -30,7 +30,7 @@ class Network:
 		data_send = data.encode("utf-8")
 		self.conn.send(data_send)
 
-		reply = self.conn.recv(2048 * 4)
+		reply = self.conn.recv(2048 * 8)
 		reply = pickle.loads(reply)
 		return reply
 
