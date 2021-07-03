@@ -14,45 +14,42 @@ WIN_WIDTH = 1400
 WIN_HEIGHT = 800
 BG_COLOR = (255,255,255)
 
+LEADER_FONT = pygame.font.SysFont("comicsans", 30)
+
+
 PLAYER_BASE_SPEED = 7
 
-"""How to check if ball collide
-dis = math.sqrt((objec_x - object2_x)**2 + (object_y-object2_y)**2)
-if dis <= START_BALL_RADIUS + PLAYER_SCORE:
-"""
-
-"""How to check if players collide
-dis = math.sqrt((p1x - p2x)**2 + (p1y-p2y)**2)
-if dis < players[player2]["score"] - players[player1]["score"]*0.85:
-"""
-
-
-#Game Stuff
+#Game Variables
 balls = []
 players = []
 
-
-
-def generate_blobs(blobs = None):
-
-	if blobs is None:
-		blobs = []
-
-	for _ in range(MAX_BLOB_AMOUNT - len(blobs)):
-		x = random.randint(0,1400)
-		y = random.randint(0,800)
-		blobs.append(Blob(x,y))
-	return blobs
-
  
-def draw_window(win, players, blobs):
+def draw_window(win, players, blobs, current_id):
+	"""Draw Screen every Frame"""
+
 	#Fill screen so we clear frames
 	win.fill(BG_COLOR)
+
 	for blob in blobs:
 		blob.draw(win)
 	
+	#Draw players from the smallest to the biggest so the bigger 
+	#are above the smaller when on screen 
 	for player in sorted(players, key=lambda x: players[x].size):
 		players[player].draw(win)
+		if current_id == player:
+			players[player].draw_score(win)
+
+
+	#LEADERBOARD
+	sort_players = list(reversed(sorted(players, key=lambda x: players[x].size)))
+
+	amount = min(len(players), 5)
+	for position, player in enumerate(sort_players[:amount]):
+
+		text = LEADER_FONT.render(str(position+1) + ". " + players[player].name, 1, (0,0,0))
+		win.blit(text, (WIN_WIDTH - text.get_width() - 20, 10 + position * 20)) 
+
 	pygame.display.update()
 	
 
@@ -62,15 +59,22 @@ def main():
 
 	#WINDOW AND CLOCK STUFF
 	win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
+	pygame.display.set_caption('Agar Clone')
 	clock = pygame.time.Clock()
-	FPS = 144
+	FPS = 60
+
+	#Get name from player
+	name = str(input("Insert you name: "))
 
 	#Connect client to server
 	client = Network()
-	current_id = client.connect()
+	current_id = client.connect(name)
 	print("[ID]", current_id)
 	players, blobs = client.send("get")
 	
+	#How far a player can go on each margin
+	dif = 8
+
 	#MAIN LOOP
 	run = True
 	while run:
@@ -82,10 +86,14 @@ def main():
 		"""PLAYER MOVEMENT"""
 		#####################
 
-
+		#TO make player velocity decrease the bigger the player is
+		# we subtract PLAYER_BASE_SPEED by it size / 40
 		vel = PLAYER_BASE_SPEED - round(player.size/40)
+
+		#Lowest velocity a player can have when getting bigger
 		if vel <= 4:
 			vel = 4
+
 		keys = pygame.key.get_pressed()
 		if keys[pygame.K_LEFT] or keys[pygame.K_a]:
 			player.move(x = vel * (-1))
@@ -99,27 +107,23 @@ def main():
 		if keys[pygame.K_DOWN] or keys[pygame.K_s]:
 			player.move(y = vel)
 
-		if player.x - 5 < 0:
+
+		if player.x - dif < 0:
 			player.x = 10
-		if player.x  + 5> WIN_WIDTH:
+		if player.x  + dif > WIN_WIDTH:
 			player.x = WIN_WIDTH - 10
-		if player.y  - 5 < 0:
+		if player.y  - dif < 0:
 			player.y = 10
-		if player.y + 5 > WIN_HEIGHT:
+		if player.y + dif > WIN_HEIGHT:
 			player.y = WIN_HEIGHT - 10
 
+		#Prepare data with the move command
 		data = "move" + " " + str(player.x) + " " + str(player.y)
 		
 		#get data again
 		players, blobs = client.send(data)
 		
-		#Check collisions and blob amounts
-		# player_collision()
-		# check_collision(players,blobs)
-		# blobs = generate_blobs(blobs)
-		
 		"""PYGAME EVENTS"""
-		#####################
 		for event in pygame.event.get():
 
 			#EXIT PROGRAM
@@ -127,11 +131,12 @@ def main():
 				run = False
 
 		#Redraw Window -> Update Frames
-		draw_window(win, players, blobs)
+		draw_window(win, players, blobs, current_id)
 
 	pygame.quit()
 	quit()
 
-main()
+if __name__ == "__main__":
+	main()
 
 	

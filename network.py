@@ -16,11 +16,10 @@ class Network:
 		self.port = PORT
 		self.addr = (self.host, self.port)
 
-	def connect(self):
+	def connect(self, name):
 
 		self.conn.connect(self.addr)
-
-		#ADD NAME HERE LATER, send to server
+		self.conn.send(name.encode("utf-8"))
 
 		#Receives a ID from server and returns it
 		id = self.conn.recv(8).decode("utf-8")
