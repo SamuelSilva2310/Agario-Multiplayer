@@ -71,22 +71,13 @@ Run the game.py file enter a name and start playing, it will directly connect to
   <img src="Game Images/game.png" alt="CaturrasList"/><br/>
 </p>
 
+<p align="center">
+  <img src="Game Images/server.png" alt="CaturrasList"/><br/>
+</p>
+
+This is what the server looks like when new connections happen
+
 <!-- CONTACT -->
 ## Contact
 
 Samuel Silva - [@https://www.instagram.com/samuel__2310/](https://www.instagram.com/samuel__2310/) - samuelsilva2310@gmail.com
-
-Project Link: [https://github.com/SamuelSilva2310/Craigs-Clone-Django](https://github.com/SamuelSilva2310/Craigs-Clone-Django)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [Django](https://www.djangoproject.com/)
-
-
-
-
-
-
-
