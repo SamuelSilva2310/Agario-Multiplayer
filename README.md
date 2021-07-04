@@ -60,19 +60,15 @@ with out friends.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-- **First Step:** Create an Account And Login
-<p align="center">
-  <img src="https://github.com/SamuelSilva2310/django-TodoApp/blob/main/imagesReadMe/Login.png?raw=true" alt="CaturrasList"/><br/>
-</p>
+- **First Step:** Run the Server 
+To run the server all we need to do is run the server.py file, everythong is setup so it runs in our local network.
 
-- **Second Step:**  Create and Open a List.
-<p align="center">
-  <img src="https://github.com/SamuelSilva2310/django-TodoApp/blob/main/imagesReadMe/Lists.png?raw=true" alt="CaturrasList"/><br/>
-</p>
+- **Second Step:**  Run a game
+Run the game.py file enter a name and start playing, it will directly connect to our server.
 
-- **Third Step:**  Create a Task.
+- **Third Step:**  Play.
 <p align="center">
-  <img src="https://github.com/SamuelSilva2310/django-TodoApp/blob/main/imagesReadMe/task.png?raw=true" alt="CaturrasList"/><br/>
+  <img src="Game Images/game.png" alt="CaturrasList"/><br/>
 </p>
 
 <!-- CONTACT -->
