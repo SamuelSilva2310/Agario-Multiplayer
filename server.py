@@ -27,6 +27,8 @@ connections = 0
 players = {} # {"id" : PlayerObject}
 blobs = []
 
+started = False
+
 ##################
 #  SERVER SETUP  #
 ##################
@@ -102,7 +104,7 @@ def generate_blobs(blobs):
 def player_thread(conn, id):
 
 	"""A thread method that runs for every player/client"""
-	global connections, players, blobs
+	global connections, players, blobs, started
 
 	current_id = id
 
@@ -117,6 +119,7 @@ def player_thread(conn, id):
 	players[current_id] = player
 
 	conn.send(str(current_id).encode("utf-8")) #send ID to client
+
 
 	#Start loop for game events
 	while True:
@@ -138,14 +141,16 @@ def player_thread(conn, id):
 				y = int(split_data[2])
 				players[current_id].x = x
 				players[current_id].y = y
-
-			#Check collisions
-			check_collision(players,blobs)
-			player_collision(players)
+			
+			#Check collision
+			if started:
+				
+				check_collision(players,blobs)
+				player_collision(players)
 
 			blobs = generate_blobs(blobs)
 
-			##need to send players, balls back to client.
+			#need to send players, balls back to client.
 			data_send = pickle.dumps((players, blobs))
 			conn.send(data_send)
 
@@ -166,6 +171,10 @@ while True:
 	conn, addr = server.accept()
 	print(f"[CONNECTION] {addr} connected. ") 
 	connections += 1
+
+	# is a game is lauched in the host computer then game starts
+	if addr[0] == IP:
+		started = True
 
 	#start a new client thread
 	start_new_thread(player_thread, (conn, player_id))
