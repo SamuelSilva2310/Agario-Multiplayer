@@ -19,4 +19,9 @@ class Blob:
         self.blob_color = COLORS[random.randint(0, len(COLORS) - 1)]
 
     def draw(self, win):
+        """
+        Draws the blob on screen
+        @param win: pygame.Window
+        @return: None
+        """
         pygame.draw.circle(win, self.blob_color, (self.x, self.y), self.size, self.thickness)

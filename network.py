@@ -17,6 +17,11 @@ class Network:
 		self.addr = (self.host, self.port)
 
 	def connect(self, name):
+		"""
+        connects player client to server
+        @param name: str
+        @return: int
+        """
 
 		self.conn.connect(self.addr)
 		self.conn.send(name.encode("utf-8"))
@@ -26,6 +31,11 @@ class Network:
 		return int(id)
 
 	def send(self, data):
+		"""
+        Send data to server
+        @param data: int or str  
+        @return: str
+        """
 		data_send = data.encode("utf-8")
 		self.conn.send(data_send)
 

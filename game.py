@@ -25,8 +25,14 @@ players = []
 
  
 def draw_window(win, players, blobs, current_id):
-	"""Draw Screen every Frame"""
-
+	"""
+        Draws window every Frame
+        @param win: pygame.Window
+        @param players: dict {"id" : PlayerObject ,...}
+        @param blobs: List [blobObject, blobObject]
+        @param current_id: int
+        @return: None
+        """
 	#Fill screen so we clear frames
 	win.fill(BG_COLOR)
 
@@ -54,17 +60,22 @@ def draw_window(win, players, blobs, current_id):
 	
 
 def main():
-
+	"""
+	Main game Loop
+    @return: None
+    """
 	global players
 
+	#Get name from player
+	name = str(input("Insert you name: "))
+	
 	#WINDOW AND CLOCK STUFF
 	win = pygame.display.set_mode((WIN_WIDTH,WIN_HEIGHT))
 	pygame.display.set_caption('Agar Clone')
 	clock = pygame.time.Clock()
 	FPS = 60
 
-	#Get name from player
-	name = str(input("Insert you name: "))
+	
 
 	#Connect client to server
 	client = Network()
